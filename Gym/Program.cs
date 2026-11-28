@@ -1,3 +1,8 @@
+using Gym.Context;
+using Gym.Repositeries.Classes;
+using Gym.Repositeries.Interfaces;
+using Microsoft.EntityFrameworkCore;
+
 namespace Gym
 {
     public class Program
@@ -8,6 +13,13 @@ namespace Gym
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // DbContext (connection string from appsettings.json)
+            builder.Services.AddDbContext<GymDbContext>(options =>
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Repositories
+            builder.Services.AddScoped<IPlanRepository, PlanRepository>();
 
             var app = builder.Build();
 
